@@ -1,18 +1,4 @@
-<h2 align="center">My WezTerm Config</h2>
-
-<p align="center">
-  <a href="https://github.com/KevinSilvester/wezterm-config/stargazers">
-    <img alt="Stargazers" src="https://img.shields.io/github/stars/KevinSilvester/wezterm-config?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41">
-  </a>
-  <a href="https://github.com/KevinSilvester/wezterm-config/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/KevinSilvester/wezterm-config?style=for-the-badge&logo=gitbook&color=B5E8E0&logoColor=D9E0EE&labelColor=302D41">
-  </a>
-  <a href="https://github.com/KevinSilvester/wezterm-config/actions/workflows/lint.yml">
-    <img alt="Build" src="https://img.shields.io/github/actions/workflow/status/KevinSilvester/wezterm-config/lint.yml?&style=for-the-badge&logo=githubactions&label=CI&color=A6E3A1&logoColor=D9E0EE&labelColor=302D41">
-  </a>
-</p>
-
-![screenshot](./.github/screenshots/wezterm.gif)
+<h2 align="center">Petryanin's WezTerm Config</h2>
 
 ---
 
@@ -32,13 +18,13 @@
 
   GPU + Adapter combo is selected based on the following criteria:
 
-  1.  <details>
+  1. <details>
       <summary>Best GPU available</summary>
 
       `Discrete` > `Integrated` > `Other` (for `wgpu`'s OpenGl implementation on Discrete GPU) > `Cpu`
       </details>
 
-  2.  <details>
+  2. <details>
       <summary>Best graphics API available (based off my very scientific scroll a big log file in Neovim test 😁)</summary>
 
       > :bulb:<br>
@@ -57,26 +43,26 @@
 
 ### All Key Binbdings
 
-Most of the key bindings revolve around a <kbd>SUPER</kbd> and a <kbd>SUPER_REV</kbd>(super reversed) keys.<br>
+Most of the key bindings revolve around a <kbd>SUPER</kbd>, <kbd>SUPER_REV</kbd>(super reversed) and <kbd>SUPER_SHIFT</kbd> keys.<br>
 
 - On MacOs:
-  - <kbd>SUPER</kbd> ⇨ <kbd>Super</kbd>
-  - <kbd>SUPER_REV</kbd> ⇨ <kbd>Super</kbd>+<kbd>Ctrl</kbd>
+  - <kbd>SUPER</kbd> ⇨ <kbd>Command</kbd>
+  - <kbd>SUPER_REV</kbd> ⇨ <kbd>Command</kbd>+<kbd>Option</kbd>
+  - <kbd>SUPER_SHIFT</kbd> ⇨ <kbd>Command</kbd>+<kbd>Shift</kbd>
 - On Windows and Linux
-  - <kbd>SUPER</kbd> ⇨ <kbd>Alt</kbd>
-  - <kbd>SUPER_REV</kbd> ⇨ <kbd>Alt</kbd>+<kbd>Ctrl</kbd>
-
-> To avoid confusion when switching between different OS and to avoid conflicting<br>
-> with OS's built-in keyboard shortcuts.
-
-- On all platforms: <kbd>LEADER</kbd> ⇨ <kbd>SUPER_REV</kbd>+<kbd>Space</kbd>
+  - <kbd>SUPER</kbd> ⇨ <kbd>Ctrl</kbd>
+  - <kbd>SUPER_REV</kbd> ⇨ <kbd>Ctrl</kbd>+<kbd>Alt</kbd>
+  - <kbd>SUPER_SHIFT</kbd> ⇨ <kbd>Ctrl</kbd>+<kbd>Shift</kbd>
+- On all platforms:
+  - <kbd>LEADER</kbd> ⇨ <kbd>SUPER_REV</kbd>+<kbd>Space</kbd>
 
 #### Miscellaneous/Useful
 
 | Keys                          | Action                                      |
 | ----------------------------- | ------------------------------------------- |
 | <kbd>F1</kbd>                 | `ActivateCopyMode`                          |
-| <kbd>F2</kbd>                 | `ActivateCommandPalette`                    |
+| <kbd>SUPER_SHIFT</kbd>+<kbd>t</kbd> | `ShowLauncher` <sub>(tabs launch menu items and domains)</sub>                   |
+| <kbd>SUPER_SHIFT</kbd>+<kbd>f</kbd> | `ActivateCommandPalette`                    |
 | <kbd>F3</kbd>                 | `ShowLauncher`                              |
 | <kbd>F4</kbd>                 | `ShowLauncher` <sub>(tabs only)</sub>       |
 | <kbd>F5</kbd>                 | `ShowLauncher` <sub>(workspaces only)</sub> |
@@ -84,15 +70,18 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and a <kbd>SUPER_REV<
 | <kbd>F12</kbd>                | `ShowDebugOverlay`                          |
 | <kbd>SUPER</kbd>+<kbd>f</kbd> | Search Text                                 |
 | <kbd>SUPER</kbd>+<kbd>u</kbd> | Open URL                                    |
+| <kbd>SUPER</kbd>+<kbd>Backspace</kbd> | Delete whole line                                    |
+| <kbd>SUPER</kbd>+<kbd>←</kbd> | Move cursor to the beginning of the line                                    |
+| <kbd>SUPER</kbd>+<kbd>→</kbd> | Move cursor to the end of the line|
 
 &nbsp;
 
 #### Copy+Paste
 
-| Keys                                          | Action               |
-| --------------------------------------------- | -------------------- |
-| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd> | Copy to Clipborad    |
-| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>v</kbd> | Paste from Clipborad |
+| Keys                          | Action               |
+| ----------------------------- | -------------------- |
+| <kbd>SUPER</kbd>+<kbd>c</kbd> | Copy to Clipborad    |
+| <kbd>SUPER</kbd>+<kbd>v</kbd> | Paste from Clipborad |
 
 &nbsp;
 
@@ -102,18 +91,19 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and a <kbd>SUPER_REV<
 
 | Keys                              | Action                                |
 | --------------------------------- | ------------------------------------- |
-| <kbd>SUPER</kbd>+<kbd>t</kbd>     | `SpawnTab` <sub>(DefaultDomain)</sub> |
-| <kbd>SUPER_REV</kbd>+<kbd>f</kbd> | `SpawnTab` <sub>(WSL:Ubuntu)</sub>    |
-| <kbd>SUPER_REV</kbd>+<kbd>w</kbd> | `CloseCurrentTab`                     |
+| <kbd>SUPER</kbd>+<kbd>t</kbd>     | `SpawnTab` <sub>(CurrentPaneDomain)</sub> |
+| <kbd>SUPER_REV</kbd>+<kbd>t</kbd> | `SpawnTab` <sub>(DefaultDomain)</sub>    |
+| <kbd>SUPER</kbd>+<kbd>w</kbd>     | `CloseCurrentTab`                     |
 
 ##### Tabs: Navigation
 
-| Keys                              | Action         |
-| --------------------------------- | -------------- |
-| <kbd>SUPER</kbd>+<kbd>[</kbd>     | Next Tab       |
-| <kbd>SUPER</kbd>+<kbd>]</kbd>     | Previous Tab   |
-| <kbd>SUPER_REV</kbd>+<kbd>[</kbd> | Move Tab Left  |
-| <kbd>SUPER_REV</kbd>+<kbd>]</kbd> | Move Tab Right |
+| Keys                                     | Action                        |
+| ---------------------------------------- | ----------------------------- |
+| <kbd>SUPER_REV</kbd>+<kbd>→</kbd>        | Next Tab                      |
+| <kbd>SUPER_REV</kbd>+<kbd>←</kbd>        | Previous Tab                  |
+| <kbd>SUPER_REV</kbd>+<kbd>[</kbd>        | Move Tab Left                 |
+| <kbd>SUPER_REV</kbd>+<kbd>]</kbd>        | Move Tab Right                |
+| <kbd>SUPER</kbd>+<kbd><number 1-9></kbd> | Switch to Tab with the number |
 
 &nbsp;
 
@@ -131,8 +121,8 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and a <kbd>SUPER_REV<
 
 | Keys                               | Action                                           |
 | ---------------------------------- | ------------------------------------------------ |
-| <kbd>SUPER</kbd>+<kbd>\\</kbd>     | `SplitVertical` <sub>(CurrentPaneDomain)</sub>   |
-| <kbd>SUPER_REV</kbd>+<kbd>\\</kbd> | `SplitHorizontal` <sub>(CurrentPaneDomain)</sub> |
+| <kbd>SUPER</kbd>+<kbd>\\</kbd>     | `SplitHorizontal` <sub>(CurrentPaneDomain)</sub> |
+| <kbd>SUPER_REV</kbd>+<kbd>\\</kbd> | `SplitVertical` <sub>(CurrentPaneDomain)</sub>   |
 
 ##### Panes: Zoom+Close Pane
 
@@ -193,12 +183,3 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd> and a <kbd>SUPER_REV<
 | <kbd>l</kbd>   | `AdjustPaneSize` <sub>(Direction: Right)</sub> |
 | <kbd>q</kbd>   | `PopKeyTable` <sub>(exit)</sub>                |
 | <kbd>Esc</kbd> | `PopKeyTable` <sub>(exit)</sub>                |
-
----
-
-### References/Inspirations
-
-- <https://github.com/rxi/lume>
-- <https://github.com/catppuccin/wezterm>
-- <https://github.com/wez/wezterm/discussions/628#discussioncomment-1874614>
-- <https://github.com/wez/wezterm/discussions/628#discussioncomment-5942139>

@@ -7,28 +7,26 @@ local mod = {}
 
 if platform.is_mac then
    mod.SUPER = 'SUPER'
-   mod.SUPER_REV = 'SUPER|CTRL'
+   mod.SUPER_REV = 'SUPER|OPT'
+   mod.SUPER_SHIFT = 'SUPER|SHIFT'
 elseif platform.is_win or platform.is_linux then
-   mod.SUPER = 'ALT' -- to not conflict with Windows key shortcuts
-   mod.SUPER_REV = 'ALT|CTRL'
+   mod.SUPER = 'CTRL'
+   mod.SUPER_REV = 'CTRL|ALT'
+   mod.SUPER_SHIFT = 'CTRL|SHIFT'
 end
 
 -- stylua: ignore
 local keys = {
-   -- misc/useful --
+   { key = 't', mods = mod.SUPER_SHIFT, action = act.ShowLauncherArgs({ title = 'Select/Search:', flags = 'FUZZY|LAUNCH_MENU_ITEMS|DOMAINS' }), },
+   { key = 'q',  mods = mod.SUPER, action = act.QuitApplication },
    { key = 'F1', mods = 'NONE', action = 'ActivateCopyMode' },
-   { key = 'F2', mods = 'NONE', action = act.ActivateCommandPalette },
+   { key = 'p', mods = mod.SUPER_SHIFT, action = act.ActivateCommandPalette },
    { key = 'F3', mods = 'NONE', action = act.ShowLauncher },
    { key = 'F4', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
-   {
-      key = 'F5',
-      mods = 'NONE',
-      action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
-   },
-   -- toggle fullscreen
+   { key = 'F5', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), },
    { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
-   { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
-   { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
+   { key = 'l', mods = mod.SUPER_SHIFT,    action = act.ShowDebugOverlay },
+   { key = 'f',   mods = mod.SUPER,       action = act.Search('CurrentSelectionOrEmptyString') },
    {
       key = 'u',
       mods = mod.SUPER,
@@ -44,20 +42,23 @@ local keys = {
          end),
       }),
    },
+   { key = "Backspace", mods = mod.SUPER, action = act.SendKey { mods = "CTRL", key = "u" } },
+   { key = "LeftArrow", mods = mod.SUPER, action = act.SendString "\x1bOH" },
+   { key = "RightArrow", mods = mod.SUPER, action = act.SendString "\x1bOF" },
 
    -- copy/paste --
-   { key = 'c', mods = 'CTRL|SHIFT',  action = act.CopyTo('Clipboard') },
-   { key = 'v', mods = 'CTRL|SHIFT',  action = act.PasteFrom('Clipboard') },
+   { key = 'c', mods = mod.SUPER,  action = act.CopyTo('Clipboard') },
+   { key = 'v', mods = mod.SUPER,  action = act.PasteFrom('Clipboard') },
 
    -- tabs --
    -- tabs: spawn+close
-   { key = 't', mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-   { key = 't', mods = mod.SUPER_REV, action = act.SpawnTab({ DomainName = 'WSL:Ubuntu' }) },
+   { key = 't', mods = mod.SUPER,     action = act.SpawnTab('CurrentPaneDomain') },
+   { key = 't', mods = mod.SUPER_REV, action = act.SpawnTab('DefaultDomain') },
    { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation
-   { key = '[', mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-   { key = ']', mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
+   { key = 'LeftArrow',  mods = mod.SUPER_REV, action = act.ActivateTabRelative(-1) },
+   { key = 'RightArrow', mods = mod.SUPER_REV, action = act.ActivateTabRelative(1) },
    { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
    { key = ']', mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
@@ -107,12 +108,12 @@ local keys = {
    {
       key = [[\]],
       mods = mod.SUPER,
-      action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
+      action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
    },
    {
       key = [[\]],
       mods = mod.SUPER_REV,
-      action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
+      action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
    },
 
    -- panes: zoom+close pane
@@ -180,6 +181,14 @@ local mouse_bindings = {
       action = act.OpenLinkAtMouseCursor,
    },
 }
+
+for i = 1, 9 do
+   table.insert(keys, {
+      key = tostring(i),
+      mods = mod.SUPER,
+      action = act.ActivateTab(i - 1),
+   })
+end
 
 return {
    disable_default_key_bindings = true,

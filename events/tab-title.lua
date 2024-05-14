@@ -1,10 +1,10 @@
 local wezterm = require('wezterm')
+local colors = require('colors.custom')
 
 -- Inspired by https://github.com/wez/wezterm/discussions/628#discussioncomment-1874614
-
 local GLYPH_SEMI_CIRCLE_LEFT = '' -- nf.ple_left_half_circle_thick
 local GLYPH_SEMI_CIRCLE_RIGHT = '' -- nf.ple_right_half_cirlce_thick
-local GLYPH_CIRCLE = '' -- nf.fa_circle
+local GLYPH_CIRCLE = '●'
 local GLYPH_ADMIN = '󰞀' -- nf.md_shield_half_full
 
 local M = {}
@@ -12,24 +12,29 @@ local M = {}
 local __cells__ = {}
 
 local colors = {
-   default = { bg = '#45475a', fg = '#1c1b19', },
-   is_active = { bg = '#7FB4CA', fg = '#11111b', },
-   hover = { bg = '#587d8c', fg = '#1c1b19', },
+   default = { bg = colors.tab_bar.inactive_tab.bg_color, fg = colors.tab_bar.inactive_tab.fg_color, },
+   is_active = { bg = colors.tab_bar.active_tab.bg_color, fg = colors.tab_bar.active_tab.fg_color, },
+   hover = { bg = colors.tab_bar.inactive_tab_hover.bg_color, fg = colors.tab_bar.inactive_tab_hover.fg_color, },
+   unseen_output_glyph = colors.ansi[7],
 }
 
-local _set_process_name = function(s)
+local _get_basename = function(s)
    local a = string.gsub(s, '(.*[/\\])(.*)', '%2')
    return a:gsub('%.exe$', '')
 end
 
-local _set_title = function(process_name, base_title, max_width, inset)
+local _get_title = function(tab_index, process_name, base_title, max_width, inset, has_unseen_output)
    local title
-   inset = inset or 6
 
+   if has_unseen_output then
+      inset = inset + 2
+   end
+
+   base_title = _get_basename(base_title)
    if process_name:len() > 0 then
-      title = process_name .. ' ~ ' .. base_title
+      title = tab_index .. ': ' .. process_name .. ' ' .. base_title
    else
-      title = base_title
+      title = tab_index .. ': ' .. base_title
    end
 
    if title:len() > max_width - inset then
@@ -62,11 +67,19 @@ M.setup = function()
    wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
       __cells__ = {}
 
+      local has_unseen_output = false
+      for _, pane in ipairs(tab.panes) do
+         if pane.has_unseen_output then
+            has_unseen_output = true
+            break
+         end
+      end
+
       local bg
       local fg
-      local process_name = _set_process_name(tab.active_pane.foreground_process_name)
+      local process_name = _get_basename(tab.active_pane.foreground_process_name)
       local is_admin = _check_if_admin(tab.active_pane.title)
-      local title = _set_title(process_name, tab.active_pane.title, max_width, (is_admin and 8))
+      local title = _get_title(tab.tab_index + 1, process_name, tab.active_pane.title, max_width, (is_admin and 6 or 4), has_unseen_output)
 
       if tab.is_active then
          bg = colors.is_active.bg
@@ -79,13 +92,6 @@ M.setup = function()
          fg = colors.default.fg
       end
 
-      local has_unseen_output = false
-      for _, pane in ipairs(tab.panes) do
-         if pane.has_unseen_output then
-            has_unseen_output = true
-            break
-         end
-      end
 
       -- Left semi-circle
       _push(fg, bg, { Intensity = 'Bold' }, GLYPH_SEMI_CIRCLE_LEFT)
@@ -100,7 +106,7 @@ M.setup = function()
 
       -- Unseen output alert
       if has_unseen_output then
-         _push(bg, '#FFA066', { Intensity = 'Bold' }, ' ' .. GLYPH_CIRCLE)
+         _push(bg, colors.unseen_output_glyph, { Intensity = 'Bold' }, ' ' .. GLYPH_CIRCLE)
       end
 
       -- Right padding

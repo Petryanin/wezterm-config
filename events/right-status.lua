@@ -1,10 +1,9 @@
 local wezterm = require('wezterm')
 local umath = require('utils.math')
+local colors = require('colors.custom')
 
 local nf = wezterm.nerdfonts
 local M = {}
-
-local SEPARATOR_CHAR = nf.oct_dash .. ' '
 
 local discharging_icons = {
    nf.md_battery_10,
@@ -31,38 +30,22 @@ local charging_icons = {
    nf.md_battery_charging,
 }
 
-local colors = {
-   date_fg = '#fab387',
-   date_bg = 'rgba(0, 0, 0, 0.4)',
-   battery_fg = '#f9e2af',
-   battery_bg = 'rgba(0, 0, 0, 0.4)',
-   separator_fg = '#74c7ec',
-   separator_bg = 'rgba(0, 0, 0, 0.4)',
-}
-
 local __cells__ = {} -- wezterm FormatItems (ref: https://wezfurlong.org/wezterm/config/lua/wezterm/format.html)
 
 ---@param text string
 ---@param icon string
 ---@param fg string
 ---@param bg string
----@param separate boolean
-local _push = function(text, icon, fg, bg, separate)
+local _push = function(text, icon, fg, bg)
    table.insert(__cells__, { Foreground = { Color = fg } })
    table.insert(__cells__, { Background = { Color = bg } })
    table.insert(__cells__, { Attribute = { Intensity = 'Bold' } })
-   table.insert(__cells__, { Text = icon .. ' ' .. text .. ' ' })
-
-   if separate then
-      table.insert(__cells__, { Foreground = { Color = colors.separator_fg } })
-      table.insert(__cells__, { Background = { Color = colors.separator_bg } })
-      table.insert(__cells__, { Text = SEPARATOR_CHAR })
-   end
+   table.insert(__cells__, { Text = ' ' .. icon .. ' ' .. text .. ' ' })
 end
 
 local _set_date = function()
-   local date = wezterm.strftime(' %a %H:%M:%S')
-   _push(date, nf.fa_calendar, colors.date_fg, colors.date_bg, true)
+   local date = wezterm.strftime(' %a %d %H:%M')
+   _push(date, nf.fa_calendar, colors.ansi[4], colors.scrollbar_thumb)
 end
 
 local _set_battery = function()
@@ -70,6 +53,7 @@ local _set_battery = function()
 
    local charge = ''
    local icon = ''
+   local fg_color = colors.ansi[3]
 
    for _, b in ipairs(wezterm.battery_info()) do
       local idx = umath.clamp(umath.round(b.state_of_charge * 10), 1, 10)
@@ -79,15 +63,22 @@ local _set_battery = function()
          icon = charging_icons[idx]
       else
          icon = discharging_icons[idx]
+         if b.state_of_charge * 100 < 20 then
+            fg_color = colors.ansi[2]
+         end
       end
    end
 
-   _push(charge, icon, colors.battery_fg, colors.battery_bg, false)
+   _push(charge, icon, fg_color, colors.scrollbar_thumb)
 end
 
 M.setup = function()
    wezterm.on('update-right-status', function(window, _pane)
-      __cells__ = {}
+      __cells__ = {
+         { Foreground = { Color = colors.scrollbar_thumb } },
+         { Background = { Color = colors.background } },
+         { Text = '' },
+      }
       _set_date()
       _set_battery()
 
