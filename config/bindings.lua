@@ -42,9 +42,16 @@ local keys = {
          end),
       }),
    },
+   -- delete the whole string
    { key = "Backspace", mods = mod.SUPER, action = act.SendKey { mods = "CTRL", key = "u" } },
+   -- move cursor to the line beginning
    { key = "LeftArrow", mods = mod.SUPER, action = act.SendString "\x1bOH" },
+   -- move cursor to the line end
    { key = "RightArrow", mods = mod.SUPER, action = act.SendString "\x1bOF" },
+   -- make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
+   {key="RightArrow", mods="OPT", action=act.SendString "\x1bf" },
+   -- make Option-Right equivalent to Alt-f; forward-word
+    {key="LeftArrow", mods="OPT", action=act.SendString "\x1bb" },
 
    -- copy/paste --
    { key = 'c', mods = mod.SUPER,  action = act.CopyTo('Clipboard') },
