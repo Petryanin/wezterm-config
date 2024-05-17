@@ -6,7 +6,16 @@ return {
    native_macos_fullscreen_mode = true,
    audible_bell = "Disabled",
 
+   visual_bell = {
+      fade_in_function = 'Ease',
+      fade_in_duration_ms = 150,
+      fade_out_function = 'Ease',
+      fade_out_duration_ms = 150,
+      target = 'CursorColor',
+   },
+
    scrollback_lines = 5000,
+
 
    hyperlink_rules = {
       -- Matches: a URL in parens: (URL)

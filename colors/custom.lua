@@ -104,5 +104,6 @@ return {
             -- The same options that were listed under the `active_tab` section above
             -- can also be used for `new_tab_hover`.
         }
-    }
+    },
+    visual_bell = '#ff79c6',
 }
