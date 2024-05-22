@@ -69,7 +69,9 @@ local _set_battery = function()
       end
    end
 
-   _push(charge, icon, fg_color, colors.scrollbar_thumb)
+   if charge ~= '' then
+      _push(charge, icon, fg_color, colors.scrollbar_thumb)
+   end
 end
 
 M.setup = function()
