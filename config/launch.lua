@@ -6,15 +6,14 @@ local options = {
 }
 
 if platform.is_win then
-   options.default_prog = { 'pwsh' }
+   options.default_prog = { 'wsl.exe', '~' }
    options.launch_menu = {
-      { label = 'PowerShell Core', args = { 'pwsh' } },
+      { label = 'WSL:Ubuntu', args = { 'wsl.exe', '~' } },
       { label = 'PowerShell Desktop', args = { 'powershell' } },
-      { label = 'Command Prompt', args = { 'cmd' } },
-      { label = 'Nushell', args = { 'nu' } },
+      { label = 'Command Prompt', args = { 'cmd.exe' } },
       {
          label = 'Git Bash',
-         args = { 'C:\\Users\\kevin\\scoop\\apps\\git\\current\\bin\\bash.exe' },
+         args = {'C:\\Program Files\\Git\\bin\\bash.exe', '-i', '-l'},
       },
    }
 elseif platform.is_mac then

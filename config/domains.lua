@@ -15,13 +15,5 @@ return {
    unix_domains = {},
 
    -- ref: https://wezfurlong.org/wezterm/config/lua/WslDomain.html
-   wsl_domains = {
-      {
-         name = 'WSL:Ubuntu',
-         distribution = 'Ubuntu',
-         username = 'alex',
-         default_cwd = '/home/alex',
-         default_prog = { 'bash', '-l' },
-      },
-   },
+   wsl_domains = wezterm.default_wsl_domains()
 }
