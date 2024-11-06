@@ -24,9 +24,9 @@ local keys = {
    { key = 'F3', mods = 'NONE', action = act.ShowLauncher },
    { key = 'F4', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
    { key = 'F5', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), },
-   { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
-   { key = 'l', mods = mod.SUPER_SHIFT,    action = act.ShowDebugOverlay },
-   { key = 'f',   mods = mod.SUPER,       action = act.Search('CurrentSelectionOrEmptyString') },
+   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
+   { key = 'l', mods = mod.SUPER_SHIFT, action = act.ShowDebugOverlay },
+   { key = 'f',   mods = mod.SUPER, action = act.Search('CurrentSelectionOrEmptyString') },
    {
       key = 'u',
       mods = mod.SUPER,
@@ -178,6 +178,21 @@ local key_tables = {
       { key = 'Escape', action = 'PopKeyTable' },
       { key = 'q',      action = 'PopKeyTable' },
    },
+   search_mode = {
+      { key = 'Enter', mods = 'NONE', action = act.CopyMode 'PriorMatch' },
+      { key = 'Enter', mods = 'SHIFT', action = act.CopyMode 'NextMatch' },
+      { key = 'Escape', mods = 'NONE', action = act.CopyMode 'Close' },
+      { key = 'n', mods = mod.SUPER, action = act.CopyMode 'NextMatch' },
+      { key = 'p', mods = mod.SUPER, action = act.CopyMode 'PriorMatch' },
+      { key = 'r', mods = mod.SUPER, action = act.CopyMode 'CycleMatchType' },
+      { key = 'Backspace', mods = mod.SUPER, action = act.CopyMode 'ClearPattern' },
+      { key = 'PageDown', mods = 'NONE', action = act.CopyMode 'PriorMatchPage' },
+      { key = 'DownArrow', mods = mod.SUPER, action = act.CopyMode 'PriorMatchPage', },
+      { key = 'PageUp', mods = 'NONE', action = act.CopyMode 'NextMatchPage' },
+      { key = 'UpArrow', mods = mod.SUPER, action = act.CopyMode 'NextMatchPage' },
+      { key = 'UpArrow', mods = 'NONE', action = act.CopyMode 'PriorMatch' },
+      { key = 'DownArrow', mods = 'NONE', action = act.CopyMode 'NextMatch' },
+    },
 }
 
 local mouse_bindings = {
