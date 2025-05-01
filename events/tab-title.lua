@@ -18,12 +18,12 @@ local colors = {
    unseen_output_glyph = colors.ansi[7],
 }
 
-local _get_basename = function(s)
+local _get_basename = function (s)
    local a = string.gsub(s, '(.*[/\\])(.*)', '%2')
    return a:gsub('%.exe$', '')
 end
 
-local _get_title = function(tab_index, process_name, base_title, max_width, inset, has_unseen_output)
+local _get_title = function (tab_index, process_name, base_title, max_width, inset, has_unseen_output)
    local title
 
    if has_unseen_output then
@@ -45,7 +45,7 @@ local _get_title = function(tab_index, process_name, base_title, max_width, inse
    return title
 end
 
-local _check_if_admin = function(p)
+local _check_if_admin = function (p)
    if p:match('^Administrator: ') then
       return true
    end
@@ -56,15 +56,15 @@ end
 ---@param bg string
 ---@param attribute table
 ---@param text string
-local _push = function(bg, fg, attribute, text)
+local _push = function (bg, fg, attribute, text)
    table.insert(__cells__, { Background = { Color = bg } })
    table.insert(__cells__, { Foreground = { Color = fg } })
    table.insert(__cells__, { Attribute = attribute })
    table.insert(__cells__, { Text = text })
 end
 
-M.setup = function()
-   wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
+M.setup = function ()
+   wezterm.on('format-tab-title', function (tab, _tabs, _panes, _config, hover, max_width)
       __cells__ = {}
 
       local has_unseen_output = false
@@ -79,7 +79,8 @@ M.setup = function()
       local fg
       local process_name = _get_basename(tab.active_pane.foreground_process_name)
       local is_admin = _check_if_admin(tab.active_pane.title)
-      local title = _get_title(tab.tab_index + 1, process_name, tab.active_pane.title, max_width, (is_admin and 6 or 4), has_unseen_output)
+      local title = _get_title(tab.tab_index + 1, process_name, tab.active_pane.title, max_width,
+      (is_admin and 6 or 4), has_unseen_output)
 
       if tab.is_active then
          bg = colors.is_active.bg

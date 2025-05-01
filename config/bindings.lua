@@ -17,16 +17,21 @@ end
 
 -- stylua: ignore
 local keys = {
-   { key = 't', mods = mod.SUPER_SHIFT, action = act.ShowLauncherArgs({ title = 'Select/Search:', flags = 'FUZZY|LAUNCH_MENU_ITEMS|DOMAINS' }), },
-   { key = 'q',  mods = mod.SUPER, action = act.QuitApplication },
-   { key = 'F1', mods = 'NONE', action = 'ActivateCopyMode' },
-   { key = 'p', mods = mod.SUPER_SHIFT, action = act.ActivateCommandPalette },
-   { key = 'F3', mods = 'NONE', action = act.ShowLauncher },
-   { key = 'F4', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
-   { key = 'F5', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), },
-   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
-   { key = 'l', mods = mod.SUPER_SHIFT, action = act.ShowDebugOverlay },
-   { key = 'f',   mods = mod.SUPER, action = act.Search('CurrentSelectionOrEmptyString') },
+   {
+      key = 't',
+      mods = mod.SUPER_SHIFT,
+      action = act.ShowLauncherArgs(
+         { title = 'Select/Search:', flags = 'FUZZY|LAUNCH_MENU_ITEMS|DOMAINS' }),
+   },
+   { key = 'q',   mods = mod.SUPER,       action = act.QuitApplication },
+   { key = 'F1',  mods = 'NONE',          action = 'ActivateCopyMode' },
+   { key = 'p',   mods = mod.SUPER_SHIFT, action = act.ActivateCommandPalette },
+   { key = 'F3',  mods = 'NONE',          action = act.ShowLauncher },
+   { key = 'F4',  mods = 'NONE',          action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
+   { key = 'F5',  mods = 'NONE',          action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), },
+   { key = 'F11', mods = 'NONE',          action = act.ToggleFullScreen },
+   { key = 'l',   mods = mod.SUPER_SHIFT, action = act.ShowDebugOverlay },
+   { key = 'f',   mods = mod.SUPER,       action = act.Search('CurrentSelectionOrEmptyString') },
    {
       key = 'u',
       mods = mod.SUPER,
@@ -35,7 +40,7 @@ local keys = {
          patterns = {
             'https?://\\S+',
          },
-         action = wezterm.action_callback(function(window, pane)
+         action = wezterm.action_callback(function (window, pane)
             local url = window:get_selection_text_for_pane(pane)
             wezterm.log_info('opening: ' .. url)
             wezterm.open_with(url)
@@ -43,55 +48,55 @@ local keys = {
       }),
    },
    -- delete the whole string
-   { key = "Backspace", mods = mod.SUPER, action = act.SendKey { mods = "CTRL", key = "u" } },
+   { key = "Backspace",  mods = mod.SUPER,     action = act.SendKey { mods = "CTRL", key = "u" } },
    -- move cursor to the line beginning
-   { key = "LeftArrow", mods = mod.SUPER, action = act.SendString "\x1bOH" },
+   { key = "LeftArrow",  mods = mod.SUPER,     action = act.SendString "\x1bOH" },
    -- move cursor to the line end
-   { key = "RightArrow", mods = mod.SUPER, action = act.SendString "\x1bOF" },
+   { key = "RightArrow", mods = mod.SUPER,     action = act.SendString "\x1bOF" },
    -- make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
-   {key="RightArrow", mods="OPT", action=act.SendString "\x1bf" },
+   { key = "RightArrow", mods = "OPT",         action = act.SendString "\x1bf" },
    -- make Option-Right equivalent to Alt-f; forward-word
-    {key="LeftArrow", mods="OPT", action=act.SendString "\x1bb" },
+   { key = "LeftArrow",  mods = "OPT",         action = act.SendString "\x1bb" },
 
    -- copy/paste --
-   { key = 'c', mods = mod.SUPER,  action = act.CopyTo('Clipboard') },
-   { key = 'v', mods = mod.SUPER,  action = act.PasteFrom('Clipboard') },
+   { key = 'c',          mods = mod.SUPER,     action = act.CopyTo('Clipboard') },
+   { key = 'v',          mods = mod.SUPER,     action = act.PasteFrom('Clipboard') },
 
    -- tabs --
    -- tabs: spawn+close
-   { key = 't', mods = mod.SUPER,     action = act.SpawnTab('CurrentPaneDomain') },
-   { key = 't', mods = mod.SUPER_REV, action = act.SpawnTab('DefaultDomain') },
-   { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+   { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('CurrentPaneDomain') },
+   { key = 't',          mods = mod.SUPER_REV, action = act.SpawnTab('DefaultDomain') },
+   { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation
    { key = 'LeftArrow',  mods = mod.SUPER_REV, action = act.ActivateTabRelative(-1) },
    { key = 'RightArrow', mods = mod.SUPER_REV, action = act.ActivateTabRelative(1) },
-   { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-   { key = ']', mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+   { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+   { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
    -- window --
    -- spawn windows
-   { key = 'n', mods = mod.SUPER,     action = act.SpawnWindow },
+   { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
 
    -- background controls --
    {
       key = [[/]],
       mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
+      action = wezterm.action_callback(function (window, _pane)
          backdrops:random(window)
       end),
    },
    {
       key = [[,]],
       mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
+      action = wezterm.action_callback(function (window, _pane)
          backdrops:cycle_back(window)
       end),
    },
    {
       key = [[.]],
       mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
+      action = wezterm.action_callback(function (window, _pane)
          backdrops:cycle_forward(window)
       end),
    },
@@ -103,7 +108,7 @@ local keys = {
          choices = backdrops:choices(),
          fuzzy = true,
          fuzzy_description = 'Select Background: ',
-         action = wezterm.action_callback(function(window, _pane, idx)
+         action = wezterm.action_callback(function (window, _pane, idx)
             ---@diagnostic disable-next-line: param-type-mismatch
             backdrops:set_img(window, tonumber(idx))
          end),
@@ -179,20 +184,20 @@ local key_tables = {
       { key = 'q',      action = 'PopKeyTable' },
    },
    search_mode = {
-      { key = 'Enter', mods = 'NONE', action = act.CopyMode 'PriorMatch' },
-      { key = 'Enter', mods = 'SHIFT', action = act.CopyMode 'NextMatch' },
-      { key = 'Escape', mods = 'NONE', action = act.CopyMode 'Close' },
-      { key = 'n', mods = mod.SUPER, action = act.CopyMode 'NextMatch' },
-      { key = 'p', mods = mod.SUPER, action = act.CopyMode 'PriorMatch' },
-      { key = 'r', mods = mod.SUPER, action = act.CopyMode 'CycleMatchType' },
+      { key = 'Enter',     mods = 'NONE',    action = act.CopyMode 'PriorMatch' },
+      { key = 'Enter',     mods = 'SHIFT',   action = act.CopyMode 'NextMatch' },
+      { key = 'Escape',    mods = 'NONE',    action = act.CopyMode 'Close' },
+      { key = 'n',         mods = mod.SUPER, action = act.CopyMode 'NextMatch' },
+      { key = 'p',         mods = mod.SUPER, action = act.CopyMode 'PriorMatch' },
+      { key = 'r',         mods = mod.SUPER, action = act.CopyMode 'CycleMatchType' },
       { key = 'Backspace', mods = mod.SUPER, action = act.CopyMode 'ClearPattern' },
-      { key = 'PageDown', mods = 'NONE', action = act.CopyMode 'PriorMatchPage' },
+      { key = 'PageDown',  mods = 'NONE',    action = act.CopyMode 'PriorMatchPage' },
       { key = 'DownArrow', mods = mod.SUPER, action = act.CopyMode 'PriorMatchPage', },
-      { key = 'PageUp', mods = 'NONE', action = act.CopyMode 'NextMatchPage' },
-      { key = 'UpArrow', mods = mod.SUPER, action = act.CopyMode 'NextMatchPage' },
-      { key = 'UpArrow', mods = 'NONE', action = act.CopyMode 'PriorMatch' },
-      { key = 'DownArrow', mods = 'NONE', action = act.CopyMode 'NextMatch' },
-    },
+      { key = 'PageUp',    mods = 'NONE',    action = act.CopyMode 'NextMatchPage' },
+      { key = 'UpArrow',   mods = mod.SUPER, action = act.CopyMode 'NextMatchPage' },
+      { key = 'UpArrow',   mods = 'NONE',    action = act.CopyMode 'PriorMatch' },
+      { key = 'DownArrow', mods = 'NONE',    action = act.CopyMode 'NextMatch' },
+   },
 }
 
 local mouse_bindings = {

@@ -1,10 +1,10 @@
 local M = {}
 
-M.clamp = function(x, min, max)
+M.clamp = function (x, min, max)
    return x < min and min or (x > max and max or x)
 end
 
-M.round = function(x, increment)
+M.round = function (x, increment)
    if increment then
       return M.round(x / increment) * increment
    end
