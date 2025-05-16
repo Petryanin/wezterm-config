@@ -15,9 +15,9 @@ return {
     cursor_border = "#f8f8f2",
 
     -- the foreground color of selected text
-    selection_fg = "none",
+    selection_fg = "#282a36",
     -- the background color of selected text
-    selection_bg = "rgba(68,71,90,0.5)",
+    selection_bg = "rgba(255,255,255,0.8)",
 
     -- The color of the scrollbar "thumb"; the portion that represents the current viewport
     scrollbar_thumb = "#44475a",
@@ -33,6 +33,9 @@ return {
     -- holding input pending the result of input composition, change the cursor
     -- to this color to give a visual cue about the compose state.
     -- compose_cursor = "#FFB86C",
+
+    copy_mode_inactive_highlight_bg = { Color = "#FF92DF" },
+    copy_mode_active_highlight_bg = { Color = "#FFFFFF" },
 
     tab_bar = {
         -- The color of the strip that goes along the top of the window
