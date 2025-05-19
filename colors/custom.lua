@@ -32,7 +32,7 @@ return {
     -- When the IME, a dead key or a leader key are being processed and are effectively
     -- holding input pending the result of input composition, change the cursor
     -- to this color to give a visual cue about the compose state.
-    -- compose_cursor = "#FFB86C",
+    compose_cursor = "#FFB86C",
 
     copy_mode_inactive_highlight_bg = { Color = "#FF92DF" },
     copy_mode_active_highlight_bg = { Color = "#FFFFFF" },

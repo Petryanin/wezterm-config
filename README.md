@@ -6,7 +6,9 @@
 
 - [**Background Image Selector**](https://github.com/KevinSilvester/wezterm-config/blob/master/utils/backdrops.lua)
 
-  Uses `wezterm.read_dir` to scan the `backdrops` directory for images.
+  - Cycle images
+  - Fuzzy search for image
+  - Toggle background image
 
   > See: [key bindings](#background-images) for usage
 
@@ -30,7 +32,7 @@
       > :bulb:<br>
       > The available graphics API choices change based on your OS.<br>
       > These options correspond to the APIs the `wgpu` crate (which powers WezTerm's gui in `WebGpu` mode)<br>
-      > currenly has support implemented for.<br>
+      > currently has support implemented for.<br>
       > See: <https://github.com/gfx-rs/wgpu#supported-platforms> for more info
 
       - Windows: `Dx12` > `Vulkan` > `OpenGl`
@@ -41,7 +43,7 @@
 
 ---
 
-### All Key Binbdings
+### Getting Started
 
 Most of the key bindings revolve around a <kbd>SUPER</kbd>, <kbd>SUPER_REV</kbd>(super reversed) and <kbd>SUPER_SHIFT</kbd> keys.<br>
 
@@ -54,7 +56,7 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd>, <kbd>SUPER_REV</kbd>
   - <kbd>SUPER_REV</kbd> ⇨ <kbd>Ctrl</kbd>+<kbd>Alt</kbd>
   - <kbd>SUPER_SHIFT</kbd> ⇨ <kbd>Ctrl</kbd>+<kbd>Shift</kbd>
 - On all platforms:
-  - <kbd>LEADER</kbd> ⇨ <kbd>SUPER_REV</kbd>+<kbd>Space</kbd>
+  - <kbd>LEADER</kbd> ⇨ <kbd>SUPER</kbd>+<kbd>L</kbd>
 
 #### Miscellaneous/Useful
 
@@ -105,13 +107,28 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd>, <kbd>SUPER_REV</kbd>
 | <kbd>SUPER_REV</kbd>+<kbd>]</kbd>        | Move Tab Right                |
 | <kbd>SUPER</kbd>+<kbd><number 1-9></kbd> | Switch to Tab with the number |
 
+##### Tabs: Toggle Tab-bar
+
+| Keys                          | Action         |
+| ----------------------------- | -------------- |
+| <kbd>SUPER</kbd>+<kbd>9</kbd> | Toggle tab bar |
+
+##### Tabs: Title
+
+| Keys                              | Action             |
+| --------------------------------- | ------------------ |
+| <kbd>SUPER</kbd>+<kbd>0</kbd>     | Rename Current Tab |
+| <kbd>SUPER_REV</kbd>+<kbd>0</kbd> | Undo Rename        |
+
 &nbsp;
 
 #### Windows
 
-| Keys                          | Action        |
-| ----------------------------- | ------------- |
-| <kbd>SUPER</kbd>+<kbd>n</kbd> | `SpawnWindow` |
+| Keys                          | Action               |
+| ----------------------------- | -------------------- |
+| <kbd>SUPER</kbd>+<kbd>n</kbd> | `SpawnWindow`        |
+| <kbd>SUPER</kbd>+<kbd>=</kbd> | Increase Window Size |
+| <kbd>SUPER</kbd>+<kbd>-</kbd> | Decrease Window Size |
 
 &nbsp;
 
@@ -141,16 +158,26 @@ Most of the key bindings revolve around a <kbd>SUPER</kbd>, <kbd>SUPER_REV</kbd>
 | <kbd>SUPER_REV</kbd>+<kbd>l</kbd> | Move to Pane (Right)    |
 | <kbd>SUPER_REV</kbd>+<kbd>p</kbd> | Swap with selected Pane |
 
+##### Panes: Scroll Pane
+
+| Keys                          | Action                               |
+| ----------------------------- | ------------------------------------ |
+| <kbd>SUPER</kbd>+<kbd>u</kbd> | Scroll Lines up <sub>5 lines</sub>   |
+| <kbd>SUPER</kbd>+<kbd>d</kbd> | Scroll Lines down <sub>5 lines</sub> |
+| <kbd>PageUp</kbd>             | Scroll Page up                       |
+| <kbd>PageDown</kbd>           | Scroll Page down                     |
+
 &nbsp;
 
 #### Background Images
 
-| Keys                              | Action                  |
-| --------------------------------- | ----------------------- |
-| <kbd>SUPER</kbd>+<kbd>/</kbd>     | Select Random Image     |
-| <kbd>SUPER</kbd>+<kbd>,</kbd>     | Cycle to next Image     |
-| <kbd>SUPER</kbd>+<kbd>.</kbd>     | Cycle to previous Image |
-| <kbd>SUPER_REV</kbd>+<kbd>/</kbd> | Fuzzy select Image      |
+| Keys                              | Action                       |
+| --------------------------------- | ---------------------------- |
+| <kbd>SUPER</kbd>+<kbd>/</kbd>     | Select Random Image          |
+| <kbd>SUPER</kbd>+<kbd>,</kbd>     | Cycle to next Image          |
+| <kbd>SUPER</kbd>+<kbd>.</kbd>     | Cycle to previous Image      |
+| <kbd>SUPER_REV</kbd>+<kbd>/</kbd> | Fuzzy select Image           |
+| <kbd>SUPER</kbd>+<kbd>b</kbd>     | Toggle background focus mode |
 
 &nbsp;
 

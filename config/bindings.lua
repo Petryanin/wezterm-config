@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
-local platform = require('utils.platform')()
+local platform = require('utils.platform')
 local backdrops = require('utils.backdrops')
+local ntb = require('events.new-tab-button')
 local act = wezterm.action
 
 local mod = {}
@@ -20,8 +21,9 @@ local keys = {
    {
       key = 't',
       mods = mod.SUPER_SHIFT,
-      action = act.ShowLauncherArgs(
-         { title = 'Select/Search:', flags = 'FUZZY|LAUNCH_MENU_ITEMS|DOMAINS' }),
+      action = wezterm.action_callback(function (window, pane)
+         ntb.get_launch_menu(window, pane)
+      end),
    },
    { key = 'q',   mods = mod.SUPER,       action = act.QuitApplication },
    { key = 'F1',  mods = 'NONE',          action = 'ActivateCopyMode' },
@@ -30,15 +32,20 @@ local keys = {
    { key = 'F4',  mods = 'NONE',          action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
    { key = 'F5',  mods = 'NONE',          action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), },
    { key = 'F11', mods = 'NONE',          action = act.ToggleFullScreen },
-   { key = 'l',   mods = mod.SUPER_SHIFT, action = act.ShowDebugOverlay },
    { key = 'f',   mods = mod.SUPER,       action = act.Search('CurrentSelectionOrEmptyString') },
+   { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
+   -- { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
    {
       key = 'u',
-      mods = mod.SUPER,
+      mods = mod.SUPER_REV,
       action = wezterm.action.QuickSelectArgs({
          label = 'open url',
          patterns = {
-            'https?://\\S+',
+            '\\((https?://\\S+)\\)',
+            '\\[(https?://\\S+)\\]',
+            '\\{(https?://\\S+)\\}',
+            '<(https?://\\S+)>',
+            '\\bhttps?://\\S+[)/a-zA-Z0-9-]+'
          },
          action = wezterm.action_callback(function (window, pane)
             local url = window:get_selection_text_for_pane(pane)
@@ -48,15 +55,20 @@ local keys = {
       }),
    },
    -- delete the whole string
-   { key = "Backspace",  mods = mod.SUPER,     action = act.SendKey { mods = "CTRL", key = "u" } },
+   -- { key = "Backspace",  mods = mod.SUPER,     action = act.SendKey { mods = "CTRL", key = "u" } },
    -- move cursor to the line beginning
-   { key = "LeftArrow",  mods = mod.SUPER,     action = act.SendString "\x1bOH" },
+   -- { key = "LeftArrow",  mods = mod.SUPER,     action = act.SendString "\x1bOH" },
    -- move cursor to the line end
-   { key = "RightArrow", mods = mod.SUPER,     action = act.SendString "\x1bOF" },
+   -- { key = "RightArrow", mods = mod.SUPER,     action = act.SendString "\x1bOF" },
    -- make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
    { key = "RightArrow", mods = "OPT",         action = act.SendString "\x1bf" },
    -- make Option-Right equivalent to Alt-f; forward-word
    { key = "LeftArrow",  mods = "OPT",         action = act.SendString "\x1bb" },
+
+   -- cursor movement --
+   { key = 'LeftArrow',  mods = mod.SUPER,     action = act.SendString '\u{1b}OH' },
+   { key = 'RightArrow', mods = mod.SUPER,     action = act.SendString '\u{1b}OF' },
+   { key = 'Backspace',  mods = mod.SUPER,     action = act.SendString '\u{15}' },
 
    -- copy/paste --
    { key = 'c',          mods = mod.SUPER,     action = act.CopyTo('Clipboard') },
@@ -77,6 +89,41 @@ local keys = {
    -- window --
    -- spawn windows
    { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
+
+   -- tab: title
+   { key = 'e',          mods = mod.SUPER,     action = act.EmitEvent('tabs.manual-update-tab-title') },
+   { key = 'e',          mods = mod.SUPER_SHIFT, action = act.EmitEvent('tabs.reset-tab-title') },
+
+   -- tab: hide tab-bar
+   { key = '9',          mods = mod.SUPER,     action = act.EmitEvent('tabs.toggle-tab-bar'), },
+
+   -- window: zoom window
+   {
+      key = '-',
+      mods = mod.SUPER,
+      action = wezterm.action_callback(function(window, _pane)
+         local dimensions = window:get_dimensions()
+         if dimensions.is_full_screen then
+            return
+         end
+         local new_width = dimensions.pixel_width - 50
+         local new_height = dimensions.pixel_height - 50
+         window:set_inner_size(new_width, new_height)
+      end)
+   },
+   {
+      key = '=',
+      mods = mod.SUPER,
+      action = wezterm.action_callback(function(window, _pane)
+         local dimensions = window:get_dimensions()
+         if dimensions.is_full_screen then
+            return
+         end
+         local new_width = dimensions.pixel_width + 50
+         local new_height = dimensions.pixel_height + 50
+         window:set_inner_size(new_width, new_height)
+      end)
+   },
 
    -- background controls --
    {
@@ -104,15 +151,25 @@ local keys = {
       key = [[/]],
       mods = mod.SUPER_REV,
       action = act.InputSelector({
-         title = 'Select Background',
+         title = 'InputSelector: Select Background',
          choices = backdrops:choices(),
          fuzzy = true,
          fuzzy_description = 'Select Background: ',
-         action = wezterm.action_callback(function (window, _pane, idx)
+         action = wezterm.action_callback(function(window, _pane, idx)
+            if not idx then
+               return
+            end
             ---@diagnostic disable-next-line: param-type-mismatch
             backdrops:set_img(window, tonumber(idx))
          end),
       }),
+   },
+   {
+      key = 'b',
+      mods = mod.SUPER,
+      action = wezterm.action_callback(function(window, _pane)
+         backdrops:toggle_focus(window)
+      end)
    },
 
    -- panes --
@@ -143,6 +200,12 @@ local keys = {
       action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
    },
 
+   -- panes: scroll pane
+   { key = 'u',        mods = mod.SUPER, action = act.ScrollByLine(-5) },
+   { key = 'd',        mods = mod.SUPER, action = act.ScrollByLine(5) },
+   { key = 'PageUp',   mods = 'NONE',    action = act.ScrollByPage(-0.75) },
+   { key = 'PageDown', mods = 'NONE',    action = act.ScrollByPage(0.75) },
+
    -- key-tables --
    -- resizes fonts
    {
@@ -163,23 +226,6 @@ local keys = {
          one_shot = false,
          timemout_miliseconds = 1000,
       }),
-   },
-   -- change tab name
-   {
-      key = 'e',
-      mods = mod.SUPER_SHIFT,
-      action = act.PromptInputLine {
-         description = 'Enter new name for tab',
-         initial_value = '',
-         action = wezterm.action_callback(function (window, pane, line)
-            -- line will be `nil` if they hit escape without entering anything
-            -- An empty string if they just hit enter
-            -- Or the actual line of text they wrote
-            if line then
-               window:active_tab():set_title(line)
-            end
-         end),
-      },
    },
 }
 
@@ -236,7 +282,8 @@ end
 
 return {
    disable_default_key_bindings = true,
-   leader = { key = 'Space', mods = mod.SUPER_REV },
+   -- disable_default_mouse_bindings = true,
+   leader = { key = 'l', mods = mod.SUPER },
    keys = keys,
    key_tables = key_tables,
    mouse_bindings = mouse_bindings,
