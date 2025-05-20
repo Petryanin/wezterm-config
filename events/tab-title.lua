@@ -125,11 +125,24 @@ end
 ---@param inset number
 local function create_title(tab_index, process_name, base_title, max_width, inset)
    local title
+   local tab_name
+   local search_mode = false
+
+   if base_title:match('^Copy mode:') then
+      base_title = string.gsub(base_title, '^Copy mode: ', '')
+      search_mode = true
+   end
 
    if process_name:len() > 0 then
-      title = tab_index .. ': ' .. process_name .. ' ' .. base_title
+      tab_name = process_name .. ' ' .. base_title
    else
-      title = tab_index .. ': ' .. base_title
+      tab_name = base_title
+   end
+
+   title = tab_index .. ': ' .. tab_name
+
+   if search_mode then
+      title = GLYPH_SEARCH .. '  ' .. title
    end
 
    if title:len() > max_width - inset then

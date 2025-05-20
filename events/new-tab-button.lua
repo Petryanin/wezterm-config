@@ -2,7 +2,6 @@ local wezterm = require('wezterm')
 local launch_menu = require('config.launch').launch_menu
 local domains = require('config.domains')
 local Cells = require('utils.cells')
-local Colors = require('colors.custom')
 
 local nf = wezterm.nerdfonts
 local act = wezterm.action
@@ -95,7 +94,7 @@ local choices, choices_data = build_choices()
 M.get_launch_menu = function(window, pane)
    window:perform_action(
       act.InputSelector({
-         title = 'InputSelector: Launch Menu',
+         title = nf.cod_list_selection .. ' Launch Menu',
          choices = choices,
          fuzzy = true,
          fuzzy_description = nf.md_rocket .. ' Select a launch item: ',
