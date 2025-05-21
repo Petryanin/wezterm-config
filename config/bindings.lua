@@ -283,7 +283,7 @@ end
 return {
    disable_default_key_bindings = true,
    -- disable_default_mouse_bindings = true,
-   leader = { key = 'l', mods = mod.SUPER },
+   leader = { key = 'L', mods = mod.SUPER_SHIFT },
    keys = keys,
    key_tables = key_tables,
    mouse_bindings = mouse_bindings,
