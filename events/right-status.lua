@@ -118,6 +118,10 @@ M.setup = function (opts)
          cells
              :update_segment_colors('battery_icon', { fg = Colors.ansi[2], bg = Colors.scrollbar_thumb })
              :update_segment_colors('battery_text', { fg = Colors.ansi[2], bg = Colors.scrollbar_thumb })
+      else
+         cells
+             :update_segment_colors('battery_icon', colors.battery)
+             :update_segment_colors('battery_text', colors.battery)
       end
 
       window:set_right_status(
