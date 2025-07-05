@@ -6,6 +6,7 @@ require('utils.backdrops')
    :set_images()
    :random()
 
+require('events.base').setup()
 require('events.left-status').setup()
 require('events.right-status').setup({ date_format = '%a %d %H:%M' })
 require('events.tab-title').setup({ hide_active_tab_unseen = false, unseen_icon = 'circle' })
