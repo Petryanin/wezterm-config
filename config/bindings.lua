@@ -166,7 +166,7 @@ local keys = {
    },
    {
       key = 'b',
-      mods = mod.SUPER,
+      mods = 'LEADER',
       action = wezterm.action_callback(function(window, _pane)
          backdrops:toggle_focus(window)
       end)
@@ -239,10 +239,10 @@ local key_tables = {
       { key = 'q',      action = 'PopKeyTable' },
    },
    resize_pane = {
-      { key = 'k',      action = act.AdjustPaneSize({ 'Up', 1 }) },
-      { key = 'j',      action = act.AdjustPaneSize({ 'Down', 1 }) },
-      { key = 'h',      action = act.AdjustPaneSize({ 'Left', 1 }) },
-      { key = 'l',      action = act.AdjustPaneSize({ 'Right', 1 }) },
+      { key = 'k',      action = act.AdjustPaneSize({ 'Up', 5 }) },
+      { key = 'j',      action = act.AdjustPaneSize({ 'Down', 5 }) },
+      { key = 'h',      action = act.AdjustPaneSize({ 'Left', 5 }) },
+      { key = 'l',      action = act.AdjustPaneSize({ 'Right', 5 }) },
       { key = 'Escape', action = 'PopKeyTable' },
       { key = 'q',      action = 'PopKeyTable' },
    },
@@ -283,7 +283,7 @@ end
 return {
    disable_default_key_bindings = true,
    -- disable_default_mouse_bindings = true,
-   leader = { key = '~', mods = mod.SUPER_SHIFT },
+   leader = { key = 'k', mods = mod.SUPER },
    keys = keys,
    key_tables = key_tables,
    mouse_bindings = mouse_bindings,
